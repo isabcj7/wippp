@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Testador de API - Spring Boot</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    section { margin-bottom: 40px; padding: 10px; border: 1px solid #ccc; }
+    input, button, select { margin: 5px 0; padding: 5px; width: 100%; }
+    .output { background: #f0f0f0; padding: 10px; margin-top: 10px; max-height: 200px; overflow-y: auto; }
+    h2 { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+  <h1>Testador de API - Spring Boot</h1>
+
+  <!-- Criar Estoque -->
+  <section>
+    <h2>Criar Estoque</h2>
+    <input id="stockUserId" type="number" placeholder="ID do Usuário" />
+    <button onclick="createStock()">Criar Estoque</button>
+    <button onclick="listStocks()">Listar Estoques</button>
+    <div class="output" id="stockOutput"></div>
+  </section>
+
+  <!-- Criar Usuário -->
+  <section>
+    <h2>Criar Usuário</h2>
+    <input id="userName" placeholder="Nome" />
+    <input id="userEmail" placeholder="Email" />
+    <input id="userPrefs" placeholder="Preferências" />
+    <button onclick="createUser()">Criar Usuário</button>
+    <button onclick="listUsers()">Listar Usuários</button>
+    <div class="output" id="userOutput"></div>
+  </section>
+
+  <!-- Criar Fornecedor -->
+  <section>
+    <h2>Criar Fornecedor</h2>
+    <input id="supplierName" placeholder="Nome do Fornecedor" />
+    <input id="supplierApi" placeholder="API Endpoint" />
+    <button onclick="createSupplier()">Criar Fornecedor</button>
+    <button onclick="listSuppliers()">Listar Fornecedores</button>
+    <div class="output" id="supplierOutput"></div>
+  </section>
+
+  <!-- Criar Produto -->
+  <section>
+    <h2>Criar Produto</h2>
+    <input id="productName" placeholder="Nome do Produto" />
+    <input id="productQty" type="number" placeholder="Quantidade" />
+    <input id="productPrice" type="number" step="0.01" placeholder="Preço" />
+    <input id="productDate" type="date" placeholder="Data de Vencimento" />
+    <input id="productStockId" type="number" placeholder="ID do Estoque" />
+    <button onclick="createProduct()">Criar Produto</button>
+    <button onclick="listProducts()">Listar Produtos</button>
+    <div class="output" id="productOutput"></div>
+  </section>
+
+  <!-- Criar Conteúdo Educativo -->
+  <section>
+    <h2>Criar Conteúdo Educativo</h2>
+    <input id="contentTitle" placeholder="Título" />
+    <input id="contentUrl" placeholder="URL do Vídeo" />
+    <input id="contentDuration" type="number" placeholder="Duração (minutos)" />
+    <button onclick="createContent()">Criar Conteúdo</button>
+    <button onclick="listContents()">Listar Conteúdos</button>
+    <div class="output" id="contentOutput"></div>
+  </section>
+
+  <!-- Criar Pedido -->
+  <section>
+    <h2>Criar Pedido</h2>
+    <input id="orderStockId" type="number" placeholder="ID do Estoque" />
+    <input id="orderSupplierId" type="number" placeholder="ID do Fornecedor" />
+    <input id="orderStatus" placeholder="Status do Pedido" />
+    <button onclick="createOrder()">Criar Pedido</button>
+    <button onclick="listOrders()">Listar Pedidos</button>
+    <div class="output" id="orderOutput"></div>
+  </section>
+
+  <script>
+    const API = 'http://localhost:8080';
+
+    // Criar Estoque
+    async function createStock() {
+      const body = {
+        user: { id: parseInt(document.getElementById('stockUserId').value) }
+      };
+      try {
+        const res = await fetch(`${API}/api/stocks`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        document.getElementById('stockOutput').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('stockOutput').innerText = 'Erro: ' + err;
+      }
+    }
+
+    async function listStocks() {
+      try {
+        const res = await fetch(`${API}/api/stocks`);
+        const data = await res.json();
+        document.getElementById('stockOutput').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('stockOutput').innerText = 'Erro: ' + err;
+      }
+    }
+
+    // Criar Usuário
+    async function createUser() {
+      const body = {
+        nome: document.getElementById('userName').value,
+        email: document.getElementById('userEmail').value,
+        preferencias: document.getElementById('userPrefs').value
+      };
+      try {
+        const res = await fetch(`${API}/api/users`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        document.getElementById('userOutput').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('userOutput').innerText = 'Erro: ' + err;
+      }
+    }
+
+    async function listUsers() {
+      try {
+        const res = await fetch(`${API}/api/users`);
+        const data = await res.json();
+        document.getElementById('userOutput').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('userOutput').innerText = 'Erro: ' + err;
+      }
+    }
+
+    // Criar Fornecedor
+    async function createSupplier() {
+      const body = {
+        nome: document.getElementById('supplierName').value,
+        apiEndpoint: document.getElementById('supplierApi').value
+      };
+      try {
+        const res = await fetch(`${API}/api/suppliers`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        document.getElementById('supplierOutput').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('supplierOutput').innerText = 'Erro: ' + err;
+      }
+    }
+
+    async function listSuppliers() {
+      try {
+        const res = await fetch(`${API}/api/suppliers`);
+        const data = await res.json();
+        document.getElementById('supplierOutput').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('supplierOutput').innerText = 'Erro: ' + err;
+      }
+    }
+
+    // Criar Produto
+    async function createProduct() {
+      const body = {
+        nome: document.getElementById('productName').value,
+        quantidade: parseInt(document.getElementById('productQty').value),
+        preco: parseFloat(document.getElementById('productPrice').value),
+        dataVencimento: document.getElementById('productDate').value,
+        stock: { id: parseInt(document.getElementById('productStockId').value) }
+      };
+      try {
+        const res = await fetch(`${API}/api/products`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        document.getElementById('productOutput').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('productOutput').innerText = 'Erro: ' + err;
+      }
+    }
+
+    async function listProducts() {
+      try {
+        const res = await fetch(`${API}/api/products`);
+        const data = await res.json();
+        document.getElementById('productOutput').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('productOutput').innerText = 'Erro: ' + err;
+      }
+    }
+
+    // Criar Conteúdo Educativo
+    async function createContent() {
+      const body = {
+        titulo: document.getElementById('contentTitle').value,
+        videoUrl: document.getElementById('contentUrl').value,
+        duracao: parseInt(document.getElementById('contentDuration').value)
+      };
+      try {
+        const res = await fetch(`${API}/api/contents`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        document.getElementById('contentOutput').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('contentOutput').innerText = 'Erro: ' + err;
+      }
+    }
+
+    async function listContents() {
+      try {
+        const res = await fetch(`${API}/api/contents`);
+        const data = await res.json();
+        document.getElementById('contentOutput').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('contentOutput').innerText = 'Erro: ' + err;
+      }
+    }
+
+    // Criar Pedido
+    async function createOrder() {
+      const body = {
+        stock: { id: parseInt(document.getElementById('orderStockId').value) },
+        supplier: { id: parseInt(document.getElementById('orderSupplierId').value) },
+        status: document.getElementById('orderStatus').value
+      };
+      try {
+        const res = await fetch(`${API}/api/orders`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        document.getElementById('orderOutput').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('orderOutput').innerText = 'Erro: ' + err;
+      }
+    }
+
+    async function listOrders() {
+      try {
+        const res = await fetch(`${API}/api/orders`);
+        const data = await res.json();
+        document.getElementById('orderOutput').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('orderOutput').innerText = 'Erro: ' + err;
+      }
+    }
+  </script>
+
+</body>
+</html>
+
